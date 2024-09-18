@@ -1,10 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By, ByType
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 
 service = Service(executable_path="/usr/bin/chromedriver")
 driver = webdriver.Chrome(service=service)
@@ -32,13 +30,14 @@ def main():
     wait_for_element(By.ID, cookie_id)
     cookie = driver.find_element(By.ID, cookie_id)
 
-    products_count = len(driver.find_elements(By.CLASS_NAME, "product"))
+    products_count = len(driver.find_elements(By.CLASS_NAME, product_prefix))
 
     while True:
         for i in range(100):
             cookie.click()
 
-        cookies_count = driver.find_element(By.ID, total_cookies_id).text.split(" ")[0]
+        cookies_count = driver.find_element(
+            By.ID, total_cookies_id).text.split(" ")[0]
         cookies_count = int(cookies_count.replace(",", ""))
 
         for i in range(products_count - 1, -1, -1):
